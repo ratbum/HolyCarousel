@@ -1,4 +1,4 @@
-## TODO
+HolyCarousel
+============
 
-Implement form controls as classes (CS?).
-Implement form templates, which describe ids for form elements and the control type.
+Carousel made to assist in the Crusade Against Floats
