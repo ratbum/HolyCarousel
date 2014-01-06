@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>index</title>
+		<link rel="stylesheet" href="main.css" type="text/css" media="screen" title="no title" charset="utf-8">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="HolyCarousel.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="carousel">
+			<div class="item">
+				Hello there, my name is Alice.
+				<img src="http://3.bp.blogspot.com/-FDjUHHmZCvg/UMYvoH3gsDI/AAAAAAAAA54/w1cf_WQmArk/s1600/political-pictures-pope-benedict-xvi-faith-bulletproof.jpg">
+			</div>
+			<div class="item">
+				Hi there, my name is Bob.
+			</div>
+			<div class="item">
+				Howdy. I'm Claire.
+			</div>
+			<div class="item">
+				Hei, hyggelig. Jeg heter Thad.
+			</div>
+		</div>
+		<script type="text/javascript" charset="utf-8">
+			$(document).ready(function() {
+				$('#carousel').holyCarousel({responsive:true});
+				$('#carousel').holyCarousel('next', 2);
+			});
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,8 @@
+.holycarousel {
+  overflow: hidden; }
+  .holycarousel .holy-rail {
+    position: relative;
+    margin-left: 0; }
+  .holycarousel .item {
+    display: inline-block;
+    vertical-align: top; }
