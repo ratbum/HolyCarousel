@@ -103,6 +103,7 @@
     prev: function() {
       var currentIndex, data, numSlides, targetIndex;
       data = this.data('holycarousel');
+      currentIndex = data.currentIndex;
       if (currentIndex === 0) {
         numSlides = data.slides.length;
         targetIndex = numSlides - 1;

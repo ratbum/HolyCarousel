@@ -90,7 +90,7 @@ HolyCarousel =
 		
 	prev:() ->
 		data = this.data('holycarousel')
-		
+		currentIndex = data.currentIndex
 		if currentIndex is 0
 			numSlides = data.slides.length
 			targetIndex = numSlides - 1
