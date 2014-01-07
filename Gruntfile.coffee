@@ -12,7 +12,7 @@ module.exports = (grunt) ->
 		compress:
 			dist:
 				options:
-					archive: 'extension.zip'
+					archive: 'plugin.zip'
 				files: [
 					{
 						flatten: true
@@ -57,7 +57,7 @@ module.exports = (grunt) ->
 		uglify:
 			dist:
 				files:
-					'dist/script.js': ['lib/*.js', 'js/*.js']
+					'dist/jquery.holycarousel.min.js': ['lib/*.js', 'js/*.js']
 		watch:
 			test:
 				files: ['**/*.coffee', '**/*.scss', '*.html']
@@ -72,5 +72,6 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-contrib-watch'
 
 	# Default task.
-	grunt.registerTask 'default', ['coffee', 'uglify', 'copy:dist', 'sass:dist', 'compress:dist']
+	grunt.registerTask 'dist', ['coffee', 'uglify', 'copy:dist', 'sass:dist', 'compress:dist']
+	grunt.registerTask 'default', ['dist']
 	grunt.registerTask 'test', ['coffee', 'sass:test', 'copy:test']
