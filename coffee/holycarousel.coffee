@@ -59,7 +59,7 @@ HolyCarousel =
 		numSlides = data.slides.length
 		currentIndex = data.currentIndex
 		HolyCarousel.slideTo.apply(this, [(currentIndex+1)%numSlides])
-		thiso
+		this
 		
 	prev:() ->
 		data = this.data('holycarousel')
