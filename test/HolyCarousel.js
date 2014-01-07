@@ -24,7 +24,8 @@
         if (!data) {
           $this.data('holycarousel', {
             opts: opts || {
-              responsive: true
+              responsive: true,
+              alterHeight: false
             },
             slides: $slides.tojqa(),
             currentIndex: 0
@@ -41,28 +42,50 @@
       return this;
     },
     respond: function() {
-      var data, innerWidth, marginLeft, outerSpace, slide, slides, _i, _len;
+      var currentIndex, data, innerWidth, marginLeft, outerSpace, slide, slides, _i, _len;
       data = this.data('holycarousel');
       slides = data.slides;
+      currentIndex = data.currentIndex;
       outerSpace = slides[0].outerWidth(true) - slides[0].width();
       innerWidth = this.width();
       for (_i = 0, _len = slides.length; _i < _len; _i++) {
         slide = slides[_i];
-        slide[0].style.width = innerWidth - outerSpace + 'px';
+        slide[0].style.width = innerWidth + 'px';
       }
       marginLeft = -Math.abs(slides[data.currentIndex].position().left);
       $('.holy-rail', this).css('margin-left', marginLeft + 'px');
+      if (data.opts.alterHeight) {
+        this.height(slides[currentIndex].outerHeight(true));
+      }
       return this;
     },
-    slideTo: function(index) {
-      var data, marginLeft, slides;
+    slideTo: function(targetIndex) {
+      var currentHeight, currentIndex, data, high, i, low, marginLeft, maxHeight, self, slides, _i;
+      self = this;
       data = this.data('holycarousel');
       slides = data.slides;
-      marginLeft = -Math.abs(slides[index].position().left);
+      currentIndex = data.currentIndex;
+      marginLeft = -Math.abs(slides[targetIndex].position().left);
+      if (data.opts.alterHeight) {
+        high = Math.max(currentIndex, targetIndex);
+        low = Math.min(currentIndex, targetIndex);
+        maxHeight = 0;
+        for (i = _i = low; _i <= high; i = _i += 1) {
+          currentHeight = slides[i].outerHeight(true);
+          if (currentHeight > maxHeight) {
+            maxHeight = currentHeight;
+          }
+        }
+        this.height(maxHeight);
+      }
       $('.holy-rail', this).animate({
         marginLeft: marginLeft
+      }, function() {
+        if (data.opts.alterHeight) {
+          return self.height(slides[targetIndex].outerHeight(true));
+        }
       });
-      data.currentIndex = index;
+      data.currentIndex = targetIndex;
       return this;
     },
     next: function() {

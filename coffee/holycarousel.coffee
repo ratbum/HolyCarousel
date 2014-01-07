@@ -21,7 +21,10 @@ HolyCarousel =
 			
 			if not data
 				$this.data('holycarousel', {
-				    opts: opts or {responsive:true}
+					opts: opts or {
+						responsive:true
+						alterHeight: false
+					}
 					slides: $slides.tojqa()
 					currentIndex: 0
 				})
@@ -34,26 +37,45 @@ HolyCarousel =
 		this
 					
 	respond:() ->
-		data = this.data('holycarousel')
+		data = @data('holycarousel')
 		slides = data.slides
+		currentIndex = data.currentIndex
 		outerSpace = slides[0].outerWidth(true)-slides[0].width()		
-		innerWidth = this.width()
+		innerWidth = @width()
 		
 		for slide in slides
 			slide[0].style.width = innerWidth + 'px'
 		
 		marginLeft = -Math.abs(slides[data.currentIndex].position().left)
 		$('.holy-rail', this).css('margin-left', marginLeft+'px')
+		if data.opts.alterHeight
+			@height(slides[currentIndex].outerHeight(true))
 		this
 			
-	slideTo:(index) ->
-		data = this.data('holycarousel')
+	slideTo:(targetIndex) ->
+		self = this
+		data = @data('holycarousel')
 		slides = data.slides
-		marginLeft = -Math.abs(slides[index].position().left)
+		currentIndex = data.currentIndex
+		marginLeft = -Math.abs(slides[(targetIndex)].position().left)
+		
+		if data.opts.alterHeight
+			high = Math.max(currentIndex, targetIndex)
+			low = Math.min(currentIndex, targetIndex)
+			maxHeight = 0
+			for i in [low..high] by 1
+				currentHeight = slides[i].outerHeight(true)
+				maxHeight = currentHeight if currentHeight > maxHeight
+			@height(maxHeight)
+				
+			
 		$('.holy-rail', this).animate({
 			marginLeft: marginLeft
-		})
-		data.currentIndex = index
+		}, -> 
+			if data.opts.alterHeight
+				self.height(slides[targetIndex].outerHeight(true))
+		)
+		data.currentIndex = (targetIndex)
 		this
 	
 	next:() ->
