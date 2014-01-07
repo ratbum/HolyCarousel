@@ -93,8 +93,9 @@
     } else if (typeof method === 'object' || !method) {
       return HolyCarousel.init.apply(this, arguments);
     } else {
-      return $.error('Method ' + method + ' does not exist on jQuery.holyCarousel');
+      $.error('Method ' + method + ' does not exist on jQuery.holyCarousel');
     }
+    return this;
   };
 
 }).call(this);

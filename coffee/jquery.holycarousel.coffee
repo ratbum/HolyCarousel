@@ -84,3 +84,4 @@ $.fn.holyCarousel = (method) ->
 		return HolyCarousel.init.apply(this, arguments)
 	else
 		$.error('Method ' + method + ' does not exist on jQuery.holyCarousel');
+	this
