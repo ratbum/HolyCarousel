@@ -15,7 +15,8 @@ HolyCarousel =
 			data = $this.data('holycarousel');
 			
 			$slides = $this.children()
-			$slides.wrapAll('<div class="holy-rail" style="margin-left: 0; width:9999%; margin-left: 0;"></div>')			
+			$slides.wrapAll('<div class="holy-rail" style="margin-left: 0; width:9999%; margin-left: 0;"></div>')
+			slides = $slides.tojqa()
 			
 			$slides.width($this.width())
 			
@@ -25,7 +26,7 @@ HolyCarousel =
 						responsive:true
 						alterHeight: false
 					}
-					slides: $slides.tojqa()
+					slides: slides
 					currentIndex: 0
 				})
 			data = $this.data('holycarousel')
@@ -34,6 +35,8 @@ HolyCarousel =
 			if opts.responsive
 				$(window).resize ->
 					HolyCarousel.respond.apply($this, arguments)
+				if opts.alterHeight
+					$this.height(slides[0].outerHeight(true))
 		this
 					
 	respond:() ->

@@ -14,12 +14,13 @@
   HolyCarousel = {
     init: function(opts) {
       this.each(function() {
-        var $slides, $this, data;
+        var $slides, $this, data, slides;
         $this = $(this);
         this.className += ' holycarousel';
         data = $this.data('holycarousel');
         $slides = $this.children();
         $slides.wrapAll('<div class="holy-rail" style="margin-left: 0; width:9999%; margin-left: 0;"></div>');
+        slides = $slides.tojqa();
         $slides.width($this.width());
         if (!data) {
           $this.data('holycarousel', {
@@ -27,16 +28,19 @@
               responsive: true,
               alterHeight: false
             },
-            slides: $slides.tojqa(),
+            slides: slides,
             currentIndex: 0
           });
         }
         data = $this.data('holycarousel');
         opts = opts || data.opts;
         if (opts.responsive) {
-          return $(window).resize(function() {
+          $(window).resize(function() {
             return HolyCarousel.respond.apply($this, arguments);
           });
+          if (opts.alterHeight) {
+            return $this.height(slides[0].outerHeight(true));
+          }
         }
       });
       return this;
