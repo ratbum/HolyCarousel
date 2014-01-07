@@ -40,7 +40,7 @@ HolyCarousel =
 		innerWidth = this.width()
 		
 		for slide in slides
-			slide[0].style.width = innerWidth-outerSpace + 'px'
+			slide[0].style.width = innerWidth + 'px'
 		
 		marginLeft = -Math.abs(slides[data.currentIndex].position().left)
 		$('.holy-rail', this).css('margin-left', marginLeft+'px')
