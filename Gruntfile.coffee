@@ -7,7 +7,7 @@ module.exports = (grunt) ->
 				expand: true
 				cwd: 'src'
 				src: ['**/*.coffee']
-				dest: 'bin'
+				dest: 'js'
 				ext: '.js'
 		compress:
 			dist:
@@ -40,7 +40,7 @@ module.exports = (grunt) ->
 					{
 						expand: true
 						src:['*.js']
-						cwd:'./bin/'
+						cwd:'./js/'
 						dest: 'test/'
 					}
 				]
@@ -57,7 +57,7 @@ module.exports = (grunt) ->
 		uglify:
 			dist:
 				files:
-					'dist/script.js': ['lib/*.js', 'bin/*.js']
+					'dist/script.js': ['lib/*.js', 'js/*.js']
 		watch:
 			test:
 				files: ['**/*.coffee', '**/*.scss', '*.html']
