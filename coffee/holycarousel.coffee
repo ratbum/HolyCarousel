@@ -36,14 +36,12 @@ HolyCarousel =
 	respond:() ->
 		data = this.data('holycarousel')
 		slides = data.slides
-		parentWidth = this.parent().width()
+		outerSpace = slides[0].outerWidth(true)-slides[0].width()		
 		innerWidth = this.width()
-		outerWidth = this.outerWidth(true)
 		
 		for slide in slides
-			slide[0].style.width = innerWidth + 'px'
-		data = this.data('holycarousel')
-		slides = data.slides
+			slide[0].style.width = innerWidth-outerSpace + 'px'
+		
 		marginLeft = -Math.abs(slides[data.currentIndex].position().left)
 		$('.holy-rail', this).css('margin-left', marginLeft+'px')
 		this
