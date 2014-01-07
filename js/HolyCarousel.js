@@ -41,7 +41,7 @@
       return this;
     },
     respond: function() {
-      var data, innerWidth, outerWidth, parentWidth, slide, slides, _i, _len;
+      var data, innerWidth, marginLeft, outerWidth, parentWidth, slide, slides, _i, _len;
       data = this.data('holycarousel');
       slides = data.slides;
       parentWidth = this.parent().width();
@@ -51,6 +51,10 @@
         slide = slides[_i];
         slide[0].style.width = innerWidth + 'px';
       }
+      data = this.data('holycarousel');
+      slides = data.slides;
+      marginLeft = -Math.abs(slides[data.currentIndex].position().left);
+      $('.holy-rail', this).css('margin-left', marginLeft + 'px');
       return this;
     },
     slideTo: function(index) {
