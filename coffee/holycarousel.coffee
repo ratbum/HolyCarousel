@@ -59,7 +59,7 @@ HolyCarousel =
 		self = this
 		data = @data('holycarousel')
 		slides = data.slides
-		data?.opts?.afterSlide?(this)
+		data?.opts?.beforeSlide?(this, targetIndex)
 		currentIndex = data.currentIndex
 		marginLeft = -Math.abs(slides[(targetIndex)].position().left)
 		
@@ -81,7 +81,7 @@ HolyCarousel =
 			if data.opts.alterHeight
 				self.height(slides[targetIndex].outerHeight(true))
 		)
-		data.currentIndex = (targetIndex)
+		data.currentIndex = targetIndex
 		this
 	
 	next:() ->
