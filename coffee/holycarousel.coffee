@@ -59,7 +59,7 @@ HolyCarousel =
 		self = this
 		data = @data('holycarousel')
 		slides = data.slides
-		data?.opts?.beforeSlide?(this, targetIndex)
+		data?.opts?.beforeSlide?(self, targetIndex)
 		currentIndex = data.currentIndex
 		marginLeft = -Math.abs(slides[(targetIndex)].position().left)
 		
@@ -76,7 +76,7 @@ HolyCarousel =
 		$('.holy-rail', this).animate({
 			marginLeft: marginLeft
 		}, -> 
-			data?.opts?.afterSlide?(this, data.currentIndex)
+			data?.opts?.afterSlide?(self, data.currentIndex)
 				
 			if data.opts.alterHeight
 				self.height(slides[targetIndex].outerHeight(true))

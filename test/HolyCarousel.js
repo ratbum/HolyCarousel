@@ -71,7 +71,7 @@
       if (data != null) {
         if ((_ref = data.opts) != null) {
           if (typeof _ref.beforeSlide === "function") {
-            _ref.beforeSlide(this, targetIndex);
+            _ref.beforeSlide(self, targetIndex);
           }
         }
       }
@@ -96,7 +96,7 @@
         if (data != null) {
           if ((_ref1 = data.opts) != null) {
             if (typeof _ref1.afterSlide === "function") {
-              _ref1.afterSlide(this, data.currentIndex);
+              _ref1.afterSlide(self, data.currentIndex);
             }
           }
         }
