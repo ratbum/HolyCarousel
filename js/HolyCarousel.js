@@ -64,10 +64,17 @@
       return this;
     },
     slideTo: function(targetIndex) {
-      var currentHeight, currentIndex, data, high, i, low, marginLeft, maxHeight, self, slides, _i;
+      var currentHeight, currentIndex, data, high, i, low, marginLeft, maxHeight, self, slides, _i, _ref;
       self = this;
       data = this.data('holycarousel');
       slides = data.slides;
+      if (data != null) {
+        if ((_ref = data.opts) != null) {
+          if (typeof _ref.afterSlide === "function") {
+            _ref.afterSlide(this);
+          }
+        }
+      }
       currentIndex = data.currentIndex;
       marginLeft = -Math.abs(slides[targetIndex].position().left);
       if (data.opts.alterHeight) {
@@ -85,6 +92,14 @@
       $('.holy-rail', this).animate({
         marginLeft: marginLeft
       }, function() {
+        var _ref1;
+        if (data != null) {
+          if ((_ref1 = data.opts) != null) {
+            if (typeof _ref1.afterSlide === "function") {
+              _ref1.afterSlide(this, data.currentIndex);
+            }
+          }
+        }
         if (data.opts.alterHeight) {
           return self.height(slides[targetIndex].outerHeight(true));
         }
