@@ -70,8 +70,8 @@
       slides = data.slides;
       if (data != null) {
         if ((_ref = data.opts) != null) {
-          if (typeof _ref.afterSlide === "function") {
-            _ref.afterSlide(this);
+          if (typeof _ref.beforeSlide === "function") {
+            _ref.beforeSlide(this, targetIndex);
           }
         }
       }
