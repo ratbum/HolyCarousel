@@ -64,7 +64,7 @@
       return this;
     },
     slideTo: function(targetIndex) {
-      var currentHeight, currentIndex, data, high, i, low, marginLeft, maxHeight, self, slides, _i, _ref;
+      var currentHeight, currentIndex, data, high, i, low, marginLeft, maxHeight, pagerItem, self, slides, _i, _j, _ref, _ref1;
       self = this;
       data = this.data('holycarousel');
       slides = data.slides;
@@ -104,15 +104,23 @@
           return self.height(slides[targetIndex].outerHeight(true));
         }
       });
+      if (data.pagerItems != null) {
+        for (i = _j = 0, _ref1 = data.pagerItems.length - 1; _j <= _ref1; i = _j += 1) {
+          pagerItem = data.pagerItems[i];
+          if (i === targetIndex) {
+            pagerItem.addClass('active');
+          } else {
+            pagerItem.removeClass('active');
+          }
+        }
+      }
       data.currentIndex = targetIndex;
       return this;
     },
     next: function() {
-      var currentIndex, data, numSlides;
+      var data;
       data = this.data('holycarousel');
-      numSlides = data.slides.length;
-      currentIndex = data.currentIndex;
-      HolyCarousel.slideTo.apply(this, [(currentIndex + 1) % numSlides]);
+      HolyCarousel.slideTo.apply(this, [(data.currentIndex + 1) % data.slides.length]);
       return this;
     },
     prev: function() {
@@ -128,6 +136,62 @@
       }
       HolyCarousel.slideTo.apply(this, [targetIndex]);
       return this;
+    },
+    generate: function(controlName) {
+      var control;
+      switch (controlName) {
+        case 'pager':
+          control = HolyCarousel._generatePager.apply(this, []);
+          break;
+        case 'next-button':
+          control = HolyCarousel._generateNextButton.apply(this, []);
+          break;
+        case 'prev-button':
+          control = HolyCarousel._generatePrevButton.apply(this, []);
+      }
+      return control;
+    },
+    _generatePager: function() {
+      var currentIndex, data, i, numSlides, pager, pagerItem, pagerItems, self, _i, _ref;
+      self = this;
+      pager = $('<span class="holycarousel pager"></span>');
+      data = this.data('holycarousel');
+      currentIndex = data.currentIndex;
+      numSlides = data.slides.length;
+      pagerItems = [];
+      for (i = _i = 0, _ref = numSlides - 1; _i <= _ref; i = _i += 1) {
+        pagerItems.push(pagerItem = $('<span class="holycarousel pager-item"></span>'));
+        if (i === currentIndex) {
+          pagerItem.addClass('active');
+        }
+        pagerItem.html('' + (i + 1));
+        pagerItem.click({
+          i: i
+        }, function(e) {
+          return HolyCarousel.slideTo.apply(self, [e.data.i]);
+        });
+        pager.append(pagerItem);
+      }
+      data.pager = pager;
+      data.pagerItems = pagerItems;
+      this.data('holycarousel', data);
+      return pager;
+    },
+    _generateNextButton: function() {
+      var nextBtn, self;
+      self = this;
+      nextBtn = $('<span class="holycarousel next"></span>');
+      return nextBtn.click(function() {
+        return HolyCarousel.next.apply(self, []);
+      });
+    },
+    _generatePrevButton: function() {
+      var prevBtn, self;
+      self = this;
+      prevBtn = $('<span class="holycarousel prev"></span>');
+      return prevBtn.click(function() {
+        return HolyCarousel.prev.apply(self, []);
+      });
     }
   };
 

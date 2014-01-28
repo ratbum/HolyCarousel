@@ -81,14 +81,21 @@ HolyCarousel =
 			if data.opts.alterHeight
 				self.height(slides[targetIndex].outerHeight(true))
 		)
+		
+		if data.pagerItems?
+			for i in[0..data.pagerItems.length-1] by 1
+				pagerItem = data.pagerItems[i]
+				if i is targetIndex
+					pagerItem.addClass('active')
+				else
+					pagerItem.removeClass('active')
+		
 		data.currentIndex = targetIndex
 		this
 	
 	next:() ->
 		data = this.data('holycarousel')
-		numSlides = data.slides.length
-		currentIndex = data.currentIndex
-		HolyCarousel.slideTo.apply(this, [(currentIndex+1)%numSlides])
+		HolyCarousel.slideTo.apply(this, [(data.currentIndex + 1) % data.slides.length])
 		this
 		
 	prev:() ->
@@ -103,6 +110,52 @@ HolyCarousel =
 			
 		HolyCarousel.slideTo.apply(this, [targetIndex])
 		this
+	
+	generate:(controlName) ->
+		switch controlName
+			when 'pager'
+				control = HolyCarousel._generatePager.apply(this, [])
+			when 'next-button'
+				control = HolyCarousel._generateNextButton.apply(this, [])
+			when 'prev-button'
+				control = HolyCarousel._generatePrevButton.apply(this, [])
+		control
+
+	
+	_generatePager:() ->
+		self = this
+		pager = $('<span class="holycarousel pager"></span>')
+		data = this.data('holycarousel')
+		currentIndex = data.currentIndex
+		numSlides = data.slides.length
+		pagerItems = []
+		for i in [0..numSlides-1] by 1
+			pagerItems.push(pagerItem = $('<span class="holycarousel pager-item"></span>'))
+			if i is currentIndex
+				pagerItem.addClass('active')
+			pagerItem.html(''+(i+1))
+			pagerItem.click {i:i}, (e) -> 
+				HolyCarousel.slideTo.apply(self, [e.data.i])
+			pager.append(pagerItem)
+			
+		data.pager = pager
+		data.pagerItems = pagerItems
+		this.data('holycarousel', data)
+			
+		pager
+			
+		
+	_generateNextButton:() ->
+		self = this
+		nextBtn = $('<span class="holycarousel next"></span>')
+		nextBtn.click -> 
+			HolyCarousel.next.apply(self, [])
+			
+	_generatePrevButton:() ->
+		self = this
+		prevBtn = $('<span class="holycarousel prev"></span>')
+		prevBtn.click -> 
+			HolyCarousel.prev.apply(self, [])
 			
 jQuery.fn.holycarousel = 
 jQuery.fn.holyCarousel = 

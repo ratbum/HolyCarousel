@@ -9,5 +9,28 @@
 		display: inline-block;
 		vertical-align: top;
 		background-color:#A1F5F1;
+		overflow:hidden;
+		img {
+			float: left;
+		}
+	}
+}
+
+.pager {
+	display: block;
+	text-align: justify;
+	width: 100%;
+	&:after {
+		content: '';
+		width: 100%;
+	}
+	.pager-item {
+		width: auto;
+		padding: 5px;
+		display: inline-block;
+		cursor: pointer;
+		&.active {
+			background-color: green;
+		}
 	}
 }

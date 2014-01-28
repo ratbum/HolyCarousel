@@ -11,22 +11,30 @@
 		<div id="carousel">
 			<div class="item">
 				Hello there, my name is Alice.
-				<img src="http://3.bp.blogspot.com/-FDjUHHmZCvg/UMYvoH3gsDI/AAAAAAAAA54/w1cf_WQmArk/s1600/political-pictures-pope-benedict-xvi-faith-bulletproof.jpg">
+				<img src="http://placekitten.com/200/300">
 			</div>
 			<div class="item">
 				Hi there, my name is Bob.
 			</div>
 			<div class="item">
 				Howdy. I'm Claire.
+				<img src="http://placekitten.com/300/300">
 			</div>
 			<div class="item">
 				Hei, hyggelig. Jeg heter Thad.
 			</div>
 		</div>
+		
+		<div id="control-cont">
+			
+		</div>
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready(function() {
-				$('#carousel').holyCarousel({responsive:true, alterHeight:true});
-				$('#carousel').holyCarousel('next', 2);
+				$('#carousel').holyCarousel({responsive:true});
+				$('#control-cont').append($('#carousel').holyCarousel('generate', 'pager'));
+				$('#control-cont').append($('#carousel').holyCarousel('generate', 'prev-button').html('prev'));
+				$('#control-cont').append($('#carousel').holyCarousel('generate', 'next-button').html('next'));
+				
 			});
 			
 		</script>
