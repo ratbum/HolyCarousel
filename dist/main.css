@@ -7,4 +7,22 @@
   .holycarousel .item {
     display: inline-block;
     vertical-align: top;
-    background-color: #A1F5F1; }
+    background-color: #A1F5F1;
+    overflow: hidden; }
+    .holycarousel .item img {
+      float: left; }
+
+.pager {
+  display: block;
+  text-align: justify;
+  width: 100%; }
+  .pager:after {
+    content: '';
+    width: 100%; }
+  .pager .pager-item {
+    width: auto;
+    padding: 5px;
+    display: inline-block;
+    cursor: pointer; }
+    .pager .pager-item.active {
+      background-color: green; }

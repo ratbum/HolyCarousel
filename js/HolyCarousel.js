@@ -29,7 +29,8 @@
               alterHeight: false
             },
             slides: slides,
-            currentIndex: 0
+            currentIndex: 0,
+            pagerItemSets: []
           });
         }
         data = $this.data('holycarousel');
@@ -64,7 +65,7 @@
       return this;
     },
     slideTo: function(targetIndex) {
-      var currentHeight, currentIndex, data, high, i, low, marginLeft, maxHeight, pagerItem, self, slides, _i, _j, _ref, _ref1;
+      var currentHeight, currentIndex, data, high, i, low, marginLeft, maxHeight, numPagerItems, pagerItem, pagerItemSet, self, slides, _i, _j, _k, _len, _ref, _ref1, _ref2;
       self = this;
       data = this.data('holycarousel');
       slides = data.slides;
@@ -104,13 +105,18 @@
           return self.height(slides[targetIndex].outerHeight(true));
         }
       });
-      if (data.pagerItems != null) {
-        for (i = _j = 0, _ref1 = data.pagerItems.length - 1; _j <= _ref1; i = _j += 1) {
-          pagerItem = data.pagerItems[i];
-          if (i === targetIndex) {
-            pagerItem.addClass('active');
-          } else {
-            pagerItem.removeClass('active');
+      if (data.pagerItemSets != null) {
+        numPagerItems = data.pagerItemSets[0].length;
+        _ref1 = data.pagerItemSets;
+        for (_j = 0, _len = _ref1.length; _j < _len; _j++) {
+          pagerItemSet = _ref1[_j];
+          for (i = _k = 0, _ref2 = numPagerItems - 1; _k <= _ref2; i = _k += 1) {
+            pagerItem = pagerItemSet[i];
+            if (i === targetIndex) {
+              pagerItem.addClass('active');
+            } else {
+              pagerItem.removeClass('active');
+            }
           }
         }
       }
@@ -172,8 +178,7 @@
         });
         pager.append(pagerItem);
       }
-      data.pager = pager;
-      data.pagerItems = pagerItems;
+      data.pagerItemSets.push(pagerItems);
       this.data('holycarousel', data);
       return pager;
     },

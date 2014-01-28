@@ -28,6 +28,7 @@ HolyCarousel =
 					}
 					slides: slides
 					currentIndex: 0
+					pagerItemSets: []
 				})
 			data = $this.data('holycarousel')
 			opts = opts or data.opts
@@ -40,10 +41,10 @@ HolyCarousel =
 		this
 					
 	respond:() ->
-		data = @data('holycarousel')
+		data = this.data('holycarousel')
 		slides = data.slides
 		currentIndex = data.currentIndex
-		outerSpace = slides[0].outerWidth(true)-slides[0].width()		
+		outerSpace = slides[0].outerWidth(true) - slides[0].width()		
 		innerWidth = @width()
 		
 		for slide in slides
@@ -52,7 +53,7 @@ HolyCarousel =
 		marginLeft = -Math.abs(slides[data.currentIndex].position().left)
 		$('.holy-rail', this).css('margin-left', marginLeft+'px')
 		if data.opts.alterHeight
-			@height(slides[currentIndex].outerHeight(true))
+			this.height(slides[currentIndex].outerHeight(true))
 		this
 			
 	slideTo:(targetIndex) ->
@@ -82,13 +83,15 @@ HolyCarousel =
 				self.height(slides[targetIndex].outerHeight(true))
 		)
 		
-		if data.pagerItems?
-			for i in[0..data.pagerItems.length-1] by 1
-				pagerItem = data.pagerItems[i]
-				if i is targetIndex
-					pagerItem.addClass('active')
-				else
-					pagerItem.removeClass('active')
+		if data.pagerItemSets?
+			numPagerItems = data.pagerItemSets[0].length
+			for pagerItemSet in data.pagerItemSets
+				for i in [0..numPagerItems-1] by 1
+					pagerItem = pagerItemSet[i]
+					if i is targetIndex
+						pagerItem.addClass('active')
+					else
+						pagerItem.removeClass('active')
 		
 		data.currentIndex = targetIndex
 		this
@@ -128,6 +131,7 @@ HolyCarousel =
 		data = this.data('holycarousel')
 		currentIndex = data.currentIndex
 		numSlides = data.slides.length
+		
 		pagerItems = []
 		for i in [0..numSlides-1] by 1
 			pagerItems.push(pagerItem = $('<span class="holycarousel pager-item"></span>'))
@@ -138,8 +142,7 @@ HolyCarousel =
 				HolyCarousel.slideTo.apply(self, [e.data.i])
 			pager.append(pagerItem)
 			
-		data.pager = pager
-		data.pagerItems = pagerItems
+		data.pagerItemSets.push(pagerItems)
 		this.data('holycarousel', data)
 			
 		pager
