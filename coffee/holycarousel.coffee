@@ -22,10 +22,11 @@ HolyCarousel =
 			
 			if not data
 				$this.data('holycarousel', {
-					opts: opts or {
+					opts: $.extend({}, {
 						responsive:true
 						alterHeight: false
-					}
+						pagerItemText: null
+					}, opts)
 					slides: slides
 					currentIndex: 0
 					pagerItemSets: []
@@ -129,15 +130,22 @@ HolyCarousel =
 		self = this
 		pager = $('<span class="holycarousel pager"></span>')
 		data = this.data('holycarousel')
+		opts = data.opts
 		currentIndex = data.currentIndex
 		numSlides = data.slides.length
 		
 		pagerItems = []
 		for i in [0..numSlides-1] by 1
 			pagerItems.push(pagerItem = $('<span class="holycarousel pager-item"></span>'))
+				
 			if i is currentIndex
 				pagerItem.addClass('active')
-			pagerItem.html(''+(i+1))
+			
+			if opts.pagerItemText is null
+				pagerItem.html(''+(i+1))
+			else 
+				pagerItem.html(opts.pagerItemText)
+				
 			pagerItem.click {i:i}, (e) -> 
 				HolyCarousel.slideTo.apply(self, [e.data.i])
 			pager.append(pagerItem)

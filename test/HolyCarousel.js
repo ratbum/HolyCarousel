@@ -24,10 +24,11 @@
         $slides.width($this.width());
         if (!data) {
           $this.data('holycarousel', {
-            opts: opts || {
+            opts: $.extend({}, {
               responsive: true,
-              alterHeight: false
-            },
+              alterHeight: false,
+              pagerItemText: null
+            }, opts),
             slides: slides,
             currentIndex: 0,
             pagerItemSets: []
@@ -158,10 +159,11 @@
       return control;
     },
     _generatePager: function() {
-      var currentIndex, data, i, numSlides, pager, pagerItem, pagerItems, self, _i, _ref;
+      var currentIndex, data, i, numSlides, opts, pager, pagerItem, pagerItems, self, _i, _ref;
       self = this;
       pager = $('<span class="holycarousel pager"></span>');
       data = this.data('holycarousel');
+      opts = data.opts;
       currentIndex = data.currentIndex;
       numSlides = data.slides.length;
       pagerItems = [];
@@ -170,7 +172,11 @@
         if (i === currentIndex) {
           pagerItem.addClass('active');
         }
-        pagerItem.html('' + (i + 1));
+        if (opts.pagerItemText === null) {
+          pagerItem.html('' + (i + 1));
+        } else {
+          pagerItem.html(opts.pagerItemText);
+        }
         pagerItem.click({
           i: i
         }, function(e) {
