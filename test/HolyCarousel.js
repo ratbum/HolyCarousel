@@ -12,6 +12,7 @@
   };
 
   HolyCarousel = {
+    _HOLY_RAIL_HTML: '<div class="holy-rail" style="margin-left: 0; width:9999%; margin-left: 0;"></div>',
     init: function(opts) {
       this.each(function() {
         var $slides, $this, data, slides;
@@ -19,19 +20,22 @@
         this.className += ' holycarousel';
         data = $this.data('holycarousel');
         $slides = $this.children();
-        $slides.wrapAll('<div class="holy-rail" style="margin-left: 0; width:9999%; margin-left: 0;"></div>');
+        $slides.wrapAll(HolyCarousel._HOLY_RAIL_HTML);
         slides = $slides.tojqa();
         $slides.width($this.width());
         if (!data) {
           $this.data('holycarousel', {
             opts: $.extend({}, {
+              altSlides: null,
               responsive: true,
               alterHeight: false,
-              pagerItemText: null
+              pagerItemText: null,
+              altSlideWrapper: '<div class="alt-item"></div>'
             }, opts),
             slides: slides,
             currentIndex: 0,
-            pagerItemSets: []
+            pagerItemSets: [],
+            altCarousels: []
           });
         }
         data = $this.data('holycarousel');
@@ -48,7 +52,7 @@
       return this;
     },
     respond: function() {
-      var currentIndex, data, innerWidth, marginLeft, outerSpace, slide, slides, _i, _len;
+      var altCarousel, currentIndex, data, innerWidth, marginLeft, outerSpace, slide, slides, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
       data = this.data('holycarousel');
       slides = data.slides;
       currentIndex = data.currentIndex;
@@ -59,14 +63,26 @@
         slide[0].style.width = innerWidth + 'px';
       }
       marginLeft = -Math.abs(slides[data.currentIndex].position().left);
-      $('.holy-rail', this).css('margin-left', marginLeft + 'px');
+      $('.holy-rail', this).css('margin-left', "" + marginLeft + "px");
       if (data.opts.alterHeight) {
         this.height(slides[currentIndex].outerHeight(true));
+      }
+      _ref = data.altCarousels;
+      for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+        altCarousel = _ref[_j];
+        marginLeft = -Math.abs(altCarousel.slides[currentIndex].position().left);
+        innerWidth = altCarousel.container.width();
+        _ref1 = altCarousel.slides;
+        for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
+          slide = _ref1[_k];
+          slide[0].style.width = innerWidth + 'px';
+        }
+        altCarousel.rail.css('margin-left', "" + marginLeft + "px");
       }
       return this;
     },
     slideTo: function(targetIndex) {
-      var currentHeight, currentIndex, data, high, i, low, marginLeft, maxHeight, numPagerItems, pagerItem, pagerItemSet, self, slides, _i, _j, _k, _len, _ref, _ref1, _ref2;
+      var altCarousel, currentHeight, currentIndex, data, high, i, low, marginLeft, maxHeight, numPagerItems, pagerItem, pagerItemSet, self, slides, _i, _j, _k, _l, _len, _len1, _ref, _ref1, _ref2, _ref3;
       self = this;
       data = this.data('holycarousel');
       slides = data.slides;
@@ -106,12 +122,20 @@
           return self.height(slides[targetIndex].outerHeight(true));
         }
       });
+      _ref1 = data.altCarousels;
+      for (_j = 0, _len = _ref1.length; _j < _len; _j++) {
+        altCarousel = _ref1[_j];
+        marginLeft = -Math.abs(altCarousel.slides[targetIndex].position().left);
+        altCarousel.rail.animate({
+          marginLeft: marginLeft
+        });
+      }
       if (data.pagerItemSets != null) {
         numPagerItems = data.pagerItemSets[0].length;
-        _ref1 = data.pagerItemSets;
-        for (_j = 0, _len = _ref1.length; _j < _len; _j++) {
-          pagerItemSet = _ref1[_j];
-          for (i = _k = 0, _ref2 = numPagerItems - 1; _k <= _ref2; i = _k += 1) {
+        _ref2 = data.pagerItemSets;
+        for (_k = 0, _len1 = _ref2.length; _k < _len1; _k++) {
+          pagerItemSet = _ref2[_k];
+          for (i = _l = 0, _ref3 = numPagerItems - 1; _l <= _ref3; i = _l += 1) {
             pagerItem = pagerItemSet[i];
             if (i === targetIndex) {
               pagerItem.addClass('active');
@@ -148,13 +172,16 @@
       var control;
       switch (controlName) {
         case 'pager':
-          control = HolyCarousel._generatePager.apply(this, []);
+          control = HolyCarousel._generatePager.apply(this, Array.prototype.slice.call(arguments, 1));
           break;
         case 'next-button':
-          control = HolyCarousel._generateNextButton.apply(this, []);
+          control = HolyCarousel._generateNextButton.apply(this, Array.prototype.slice.call(arguments, 1));
           break;
         case 'prev-button':
-          control = HolyCarousel._generatePrevButton.apply(this, []);
+          control = HolyCarousel._generatePrevButton.apply(this, Array.prototype.slice.call(arguments, 1));
+          break;
+        case 'carousel':
+          control = HolyCarousel._generateAltCarousel.apply(this, Array.prototype.slice.call(arguments, 1));
       }
       return control;
     },
@@ -173,7 +200,7 @@
           pagerItem.addClass('active');
         }
         if (opts.pagerItemText === null) {
-          pagerItem.html('' + (i + 1));
+          pagerItem.html("" + (i + 1));
         } else {
           pagerItem.html(opts.pagerItemText);
         }
@@ -187,6 +214,32 @@
       data.pagerItemSets.push(pagerItems);
       this.data('holycarousel', data);
       return pager;
+    },
+    _generateAltCarousel: function(options) {
+      var $carousel, $holyRail, altCarousel, currentIndex, data, newSlide, newSlideContent, newSlideContents, newSlides, numSlides, opts, self, _i, _len;
+      self = this;
+      $carousel = $('<div class="holycarousel"></div>');
+      $holyRail = $(HolyCarousel._HOLY_RAIL_HTML);
+      data = this.data('holycarousel');
+      opts = $.extend({}, data.opts, options);
+      currentIndex = data.currentIndex;
+      newSlideContents = options.altSlides;
+      numSlides = newSlideContents.length;
+      newSlides = [];
+      for (_i = 0, _len = newSlideContents.length; _i < _len; _i++) {
+        newSlideContent = newSlideContents[_i];
+        newSlide = $(opts.altSlideWrapper).html(newSlideContent);
+        $holyRail.append(newSlide);
+        newSlides.push(newSlide);
+      }
+      $carousel.append($holyRail);
+      data.altCarousels.push(altCarousel = {
+        slides: newSlides,
+        container: $carousel,
+        rail: $holyRail
+      });
+      this.data('holycarousel', data);
+      return $carousel;
     },
     _generateNextButton: function() {
       var nextBtn, self;

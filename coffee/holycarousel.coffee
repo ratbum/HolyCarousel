@@ -7,6 +7,8 @@ $.fn.tojqa = () ->
 
 
 HolyCarousel = 
+	_HOLY_RAIL_HTML: '<div class="holy-rail" style="margin-left: 0; width:9999%; margin-left: 0;"></div>'
+	
 	init: (opts) ->
 		this.each ->
 			$this = $(this)
@@ -15,7 +17,7 @@ HolyCarousel =
 			data = $this.data('holycarousel');
 			
 			$slides = $this.children()
-			$slides.wrapAll('<div class="holy-rail" style="margin-left: 0; width:9999%; margin-left: 0;"></div>')
+			$slides.wrapAll(HolyCarousel._HOLY_RAIL_HTML)
 			slides = $slides.tojqa()
 			
 			$slides.width($this.width())
@@ -23,13 +25,16 @@ HolyCarousel =
 			if not data
 				$this.data('holycarousel', {
 					opts: $.extend({}, {
+						altSlides: null
 						responsive:true
 						alterHeight: false
 						pagerItemText: null
+						altSlideWrapper: '<div class="alt-item"></div>'
 					}, opts)
 					slides: slides
 					currentIndex: 0
 					pagerItemSets: []
+					altCarousels: []
 				})
 			data = $this.data('holycarousel')
 			opts = opts or data.opts
@@ -52,9 +57,22 @@ HolyCarousel =
 			slide[0].style.width = innerWidth + 'px'
 		
 		marginLeft = -Math.abs(slides[data.currentIndex].position().left)
-		$('.holy-rail', this).css('margin-left', marginLeft+'px')
+		$('.holy-rail', this).css('margin-left', "#{marginLeft}px")
+		
 		if data.opts.alterHeight
 			this.height(slides[currentIndex].outerHeight(true))
+		
+		for altCarousel in data.altCarousels
+			marginLeft = -Math.abs(altCarousel.slides[currentIndex].position().left)
+			
+			innerWidth = altCarousel.container.width()
+			
+			for slide in altCarousel.slides
+				slide[0].style.width = innerWidth + 'px'
+			
+			altCarousel.rail.css('margin-left', "#{marginLeft}px")
+		
+		
 		this
 			
 	slideTo:(targetIndex) ->
@@ -74,15 +92,20 @@ HolyCarousel =
 				maxHeight = currentHeight if currentHeight > maxHeight
 			@height(maxHeight)
 				
-			
+		
 		$('.holy-rail', this).animate({
 			marginLeft: marginLeft
 		}, -> 
 			data?.opts?.afterSlide?(self, data.currentIndex)
-				
 			if data.opts.alterHeight
 				self.height(slides[targetIndex].outerHeight(true))
 		)
+		
+		for altCarousel in data.altCarousels
+			marginLeft = -Math.abs(altCarousel.slides[targetIndex].position().left)
+			altCarousel.rail.animate({
+				marginLeft: marginLeft
+			})
 		
 		if data.pagerItemSets?
 			numPagerItems = data.pagerItemSets[0].length
@@ -118,11 +141,13 @@ HolyCarousel =
 	generate:(controlName) ->
 		switch controlName
 			when 'pager'
-				control = HolyCarousel._generatePager.apply(this, [])
+				control = HolyCarousel._generatePager.apply(this, Array.prototype.slice.call(arguments, 1))
 			when 'next-button'
-				control = HolyCarousel._generateNextButton.apply(this, [])
+				control = HolyCarousel._generateNextButton.apply(this, Array.prototype.slice.call(arguments, 1))
 			when 'prev-button'
-				control = HolyCarousel._generatePrevButton.apply(this, [])
+				control = HolyCarousel._generatePrevButton.apply(this, Array.prototype.slice.call(arguments, 1))
+			when 'carousel'
+				control = HolyCarousel._generateAltCarousel.apply(this, Array.prototype.slice.call(arguments, 1))
 		control
 
 	
@@ -137,12 +162,12 @@ HolyCarousel =
 		pagerItems = []
 		for i in [0..numSlides-1] by 1
 			pagerItems.push(pagerItem = $('<span class="holycarousel pager-item"></span>'))
-				
+			
 			if i is currentIndex
 				pagerItem.addClass('active')
 			
 			if opts.pagerItemText is null
-				pagerItem.html(''+(i+1))
+				pagerItem.html("#{i+1}")
 			else 
 				pagerItem.html(opts.pagerItemText)
 				
@@ -154,6 +179,35 @@ HolyCarousel =
 		this.data('holycarousel', data)
 			
 		pager
+		      
+	_generateAltCarousel:(options) ->
+		self = this
+		$carousel = $('<div class="holycarousel"></div>')
+		$holyRail = $(HolyCarousel._HOLY_RAIL_HTML)
+		data = this.data('holycarousel')
+		opts = $.extend({}, data.opts, options);
+		currentIndex = data.currentIndex
+		
+		newSlideContents = options.altSlides
+		numSlides = newSlideContents.length
+		newSlides = []
+		
+		for newSlideContent in newSlideContents
+			newSlide = $(opts.altSlideWrapper).html(newSlideContent)
+			$holyRail.append(newSlide)
+			newSlides.push(newSlide)
+		
+		$carousel.append($holyRail)
+		
+		data.altCarousels.push altCarousel = {
+			slides: newSlides
+			container: $carousel
+			rail: $holyRail
+		}
+		
+		this.data('holycarousel', data)
+		
+		$carousel
 			
 		
 	_generateNextButton:() ->

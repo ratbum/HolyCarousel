@@ -4,12 +4,14 @@
   .holycarousel .holy-rail {
     position: relative;
     margin-left: 0; }
-  .holycarousel .item {
+  .holycarousel .item,
+  .holycarousel .alt-item {
     display: inline-block;
     vertical-align: top;
     background-color: #A1F5F1;
     overflow: hidden; }
-    .holycarousel .item img {
+    .holycarousel .item img,
+    .holycarousel .alt-item img {
       float: left; }
 
 .pager {

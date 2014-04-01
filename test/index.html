@@ -28,6 +28,10 @@
 		<div id="control-cont">
 			
 		</div>
+		
+		<div id="alt-carousel">
+			
+		</div>
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready(function() {
 				$('#carousel').holyCarousel({responsive:true});
@@ -35,6 +39,8 @@
 				$('#control-cont').append($('#carousel').holyCarousel('generate', 'prev-button').html('prev'));
 				$('#control-cont').append($('#carousel').holyCarousel('generate', 'next-button').html('next'));
 				$('#control-cont').append($('#carousel').holyCarousel('generate', 'pager'));
+				$('#alt-carousel').append($('#carousel').holyCarousel('generate', 'carousel', {altSlides:['hi', 'bob', 'claire', 'thad']}));
+				$('#carousel').holyCarousel('respond');
 				
 			});
 			
