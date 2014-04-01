@@ -1,18 +1,13 @@
 .holycarousel {
   overflow: hidden;
-  background-color: #FFFC96; }
+  position: relative; }
   .holycarousel .holy-rail {
     position: relative;
     margin-left: 0; }
   .holycarousel .item,
   .holycarousel .alt-item {
     display: inline-block;
-    vertical-align: top;
-    background-color: #A1F5F1;
-    overflow: hidden; }
-    .holycarousel .item img,
-    .holycarousel .alt-item img {
-      float: left; }
+    vertical-align: top; }
 
 .pager {
   display: block;
@@ -28,3 +23,13 @@
     cursor: pointer; }
     .pager .pager-item.active {
       background-color: green; }
+
+.holycarousel {
+  background-color: #FFFC96; }
+  .holycarousel .item,
+  .holycarousel .alt-item {
+    background-color: #A1F5F1;
+    overflow: hidden; }
+    .holycarousel .item img,
+    .holycarousel .alt-item img {
+      float: left; }

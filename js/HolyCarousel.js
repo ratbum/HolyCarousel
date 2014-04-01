@@ -26,6 +26,7 @@
         if (!data) {
           $this.data('holycarousel', {
             opts: $.extend({}, {
+              animationTime: 200,
               altSlides: null,
               responsive: true,
               alterHeight: false,
@@ -60,7 +61,7 @@
       innerWidth = this.width();
       for (_i = 0, _len = slides.length; _i < _len; _i++) {
         slide = slides[_i];
-        slide[0].style.width = innerWidth + 'px';
+        slide[0].style.width = "" + innerWidth + "px";
       }
       marginLeft = -Math.abs(slides[data.currentIndex].position().left);
       $('.holy-rail', this).css('margin-left', "" + marginLeft + "px");
@@ -70,28 +71,25 @@
       _ref = data.altCarousels;
       for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
         altCarousel = _ref[_j];
-        marginLeft = -Math.abs(altCarousel.slides[currentIndex].position().left);
         innerWidth = altCarousel.container.width();
         _ref1 = altCarousel.slides;
         for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
           slide = _ref1[_k];
           slide[0].style.width = innerWidth + 'px';
         }
+        marginLeft = -Math.abs(altCarousel.slides[currentIndex].position().left);
         altCarousel.rail.css('margin-left', "" + marginLeft + "px");
       }
       return this;
     },
     slideTo: function(targetIndex) {
-      var altCarousel, currentHeight, currentIndex, data, high, i, low, marginLeft, maxHeight, numPagerItems, pagerItem, pagerItemSet, self, slides, _i, _j, _k, _l, _len, _len1, _ref, _ref1, _ref2, _ref3;
+      var altCarousel, currentHeight, currentIndex, data, high, i, low, marginLeft, maxHeight, numPagerItems, opts, pagerItem, pagerItemSet, self, slides, _base, _i, _j, _k, _l, _len, _len1, _ref, _ref1, _ref2;
       self = this;
       data = this.data('holycarousel');
+      opts = data.opts;
       slides = data.slides;
-      if (data != null) {
-        if ((_ref = data.opts) != null) {
-          if (typeof _ref.beforeSlide === "function") {
-            _ref.beforeSlide(self, targetIndex);
-          }
-        }
+      if (typeof (_base = data.opts).beforeSlide === "function") {
+        _base.beforeSlide(self, targetIndex);
       }
       currentIndex = data.currentIndex;
       marginLeft = -Math.abs(slides[targetIndex].position().left);
@@ -109,12 +107,12 @@
       }
       $('.holy-rail', this).animate({
         marginLeft: marginLeft
-      }, function() {
-        var _ref1;
+      }, opts.animationTime, function() {
+        var _ref;
         if (data != null) {
-          if ((_ref1 = data.opts) != null) {
-            if (typeof _ref1.afterSlide === "function") {
-              _ref1.afterSlide(self, data.currentIndex);
+          if ((_ref = data.opts) != null) {
+            if (typeof _ref.afterSlide === "function") {
+              _ref.afterSlide(self, data.currentIndex);
             }
           }
         }
@@ -122,20 +120,20 @@
           return self.height(slides[targetIndex].outerHeight(true));
         }
       });
-      _ref1 = data.altCarousels;
-      for (_j = 0, _len = _ref1.length; _j < _len; _j++) {
-        altCarousel = _ref1[_j];
+      _ref = data.altCarousels;
+      for (_j = 0, _len = _ref.length; _j < _len; _j++) {
+        altCarousel = _ref[_j];
         marginLeft = -Math.abs(altCarousel.slides[targetIndex].position().left);
         altCarousel.rail.animate({
           marginLeft: marginLeft
-        });
+        }, opts.animationTime);
       }
       if (data.pagerItemSets != null) {
         numPagerItems = data.pagerItemSets[0].length;
-        _ref2 = data.pagerItemSets;
-        for (_k = 0, _len1 = _ref2.length; _k < _len1; _k++) {
-          pagerItemSet = _ref2[_k];
-          for (i = _l = 0, _ref3 = numPagerItems - 1; _l <= _ref3; i = _l += 1) {
+        _ref1 = data.pagerItemSets;
+        for (_k = 0, _len1 = _ref1.length; _k < _len1; _k++) {
+          pagerItemSet = _ref1[_k];
+          for (i = _l = 0, _ref2 = numPagerItems - 1; _l <= _ref2; i = _l += 1) {
             pagerItem = pagerItemSet[i];
             if (i === targetIndex) {
               pagerItem.addClass('active');

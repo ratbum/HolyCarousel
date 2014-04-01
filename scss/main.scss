@@ -1,6 +1,6 @@
 .holycarousel {
 	overflow: hidden;
-	background-color: #FFFC96;
+	position: relative;
 	.holy-rail {
 		position: relative;
 		margin-left: 0;
@@ -9,11 +9,6 @@
 	.alt-item {
 		display: inline-block;
 		vertical-align: top;
-		background-color:#A1F5F1;
-		overflow:hidden;
-		img {
-			float: left;
-		}
 	}
 }
 
@@ -32,6 +27,18 @@
 		cursor: pointer;
 		&.active {
 			background-color: green;
+		}
+	}
+}
+
+.holycarousel {
+	background-color: #FFFC96;
+	.item,
+	.alt-item {
+		background-color:#A1F5F1;
+		overflow:hidden;
+		img {
+			float: left;
 		}
 	}
 }

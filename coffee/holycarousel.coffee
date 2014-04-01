@@ -25,6 +25,7 @@ HolyCarousel =
 			if not data
 				$this.data('holycarousel', {
 					opts: $.extend({}, {
+						animationTime: 200
 						altSlides: null
 						responsive:true
 						alterHeight: false
@@ -54,7 +55,7 @@ HolyCarousel =
 		innerWidth = @width()
 		
 		for slide in slides
-			slide[0].style.width = innerWidth + 'px'
+			slide[0].style.width = "#{innerWidth}px"
 		
 		marginLeft = -Math.abs(slides[data.currentIndex].position().left)
 		$('.holy-rail', this).css('margin-left', "#{marginLeft}px")
@@ -63,12 +64,13 @@ HolyCarousel =
 			this.height(slides[currentIndex].outerHeight(true))
 		
 		for altCarousel in data.altCarousels
-			marginLeft = -Math.abs(altCarousel.slides[currentIndex].position().left)
 			
 			innerWidth = altCarousel.container.width()
 			
 			for slide in altCarousel.slides
 				slide[0].style.width = innerWidth + 'px'
+				
+			marginLeft = -Math.abs(altCarousel.slides[currentIndex].position().left)
 			
 			altCarousel.rail.css('margin-left', "#{marginLeft}px")
 		
@@ -78,8 +80,9 @@ HolyCarousel =
 	slideTo:(targetIndex) ->
 		self = this
 		data = @data('holycarousel')
+		opts = data.opts
 		slides = data.slides
-		data?.opts?.beforeSlide?(self, targetIndex)
+		data.opts.beforeSlide?(self, targetIndex)
 		currentIndex = data.currentIndex
 		marginLeft = -Math.abs(slides[(targetIndex)].position().left)
 		
@@ -95,7 +98,7 @@ HolyCarousel =
 		
 		$('.holy-rail', this).animate({
 			marginLeft: marginLeft
-		}, -> 
+		}, opts.animationTime, -> 
 			data?.opts?.afterSlide?(self, data.currentIndex)
 			if data.opts.alterHeight
 				self.height(slides[targetIndex].outerHeight(true))
@@ -105,7 +108,7 @@ HolyCarousel =
 			marginLeft = -Math.abs(altCarousel.slides[targetIndex].position().left)
 			altCarousel.rail.animate({
 				marginLeft: marginLeft
-			})
+			}, opts.animationTime)
 		
 		if data.pagerItemSets?
 			numPagerItems = data.pagerItemSets[0].length
