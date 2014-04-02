@@ -226,7 +226,7 @@
       newSlides = [];
       for (_i = 0, _len = newSlideContents.length; _i < _len; _i++) {
         newSlideContent = newSlideContents[_i];
-        newSlide = $(opts.altSlideWrapper).html(newSlideContent);
+        newSlide = $(opts.altSlideWrapper).html(newSlideContent ? newSlideContent : '');
         $holyRail.append(newSlide);
         newSlides.push(newSlide);
       }

@@ -196,7 +196,7 @@ HolyCarousel =
 		newSlides = []
 		
 		for newSlideContent in newSlideContents
-			newSlide = $(opts.altSlideWrapper).html(newSlideContent)
+			newSlide = $(opts.altSlideWrapper).html(if newSlideContent then newSlideContent else '')
 			$holyRail.append(newSlide)
 			newSlides.push(newSlide)
 		
