@@ -8,13 +8,16 @@ A spartan responsive carousel... apart from the control generation, which is (so
 When initialising the carousel, there are a few (and I really mean a few) options you can give it to alter the behaviour.
 
 You can change the duration of the animation by setting `animationTime` to a non-negative integer - the number of milliseconds the animation should run for.
+
 	$('#carousel').holyCarousel({animationTime: 100})
 
 
 You can stop the carousel trying to detect the container's width by setting `responsive` to false.
+
 	$('#carousel').holyCarousel({responsive:false});
 
 It's possible to tell the carousel to show the full extent of every slide as it animates by setting `alterHeight` to true.
+
 	$('#carousel').holyCarousel({alterHeight: true})
 
 
