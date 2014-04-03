@@ -128,7 +128,7 @@
           marginLeft: marginLeft
         }, opts.animationTime);
       }
-      if (data.pagerItemSets != null) {
+      if ((data.pagerItemSets != null) && data.pagerItemSets.length) {
         numPagerItems = data.pagerItemSets[0].length;
         _ref1 = data.pagerItemSets;
         for (_k = 0, _len1 = _ref1.length; _k < _len1; _k++) {

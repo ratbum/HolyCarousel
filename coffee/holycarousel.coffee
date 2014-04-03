@@ -110,7 +110,7 @@ HolyCarousel =
 				marginLeft: marginLeft
 			}, opts.animationTime)
 		
-		if data.pagerItemSets?
+		if data.pagerItemSets? and data.pagerItemSets.length
 			numPagerItems = data.pagerItemSets[0].length
 			for pagerItemSet in data.pagerItemSets
 				for i in [0..numPagerItems-1] by 1
